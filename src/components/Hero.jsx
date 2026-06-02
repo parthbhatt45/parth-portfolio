@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import profilePic from "../assets/profile.jpeg";
 const ROLES = [
   "Full Stack Developer",
   "MERN Stack Engineer",
@@ -123,7 +123,7 @@ export default function Hero() {
             <span style={{ ...S.corner, top: 0, left: 0, borderTop: "2px solid var(--orange)", borderLeft: "2px solid var(--orange)", borderRadius: "var(--radius-xl) 0 0 0" }} />
             <span style={{ ...S.corner, bottom: 0, right: 0, borderBottom: "2px solid var(--orange)", borderRight: "2px solid var(--orange)", borderRadius: "0 0 var(--radius-xl) 0" }} />
             <img
-              src="/src/assets/profile.jpeg"
+                src={profilePic}
               alt="Parth Bhatt"
               style={S.img}
               onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
