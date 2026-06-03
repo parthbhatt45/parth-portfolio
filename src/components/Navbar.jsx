@@ -126,7 +126,7 @@ export default function Navbar() {
                     <a href="/resume.pdf" target="_blank" rel="noreferrer"
                         className="btn-primary"
                         style={{ marginTop: "16px", justifyContent: "center" }}>
-                        Hire Me →
+                        Resume →
                     </a>
                 </div>
             )}
