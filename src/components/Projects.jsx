@@ -3,6 +3,7 @@ import useWindowWidth from "../hooks/useWindowWidth";
 
 const PROJECTS = [
     { title: "BeatByte — Music Streaming App", desc: "Full-stack MERN music streaming platform with JWT authentication, playlist management, liked songs, artist browsing and real-time audio playback controls.", tags: ["React", "Node.js", "Express", "MongoDB", "JWT"], github: "https://github.com/parthbhatt45/Beatbyte-Music", accent: "#22c55e", label: "MERN Stack" },
+    { title: "Memorii — AI-Powered Memory Assistant", desc: "AI-powered web application to assist Alzheimer's patients in remembering daily tasks and maintaining independence. Features a smart caregiver dashboard for real-time monitoring and multilingual support for native-language accessibility.", tags: ["React", "Tailwind CSS", "Python", "AI SDK", "Vercel"], github: "https://github.com/parthbhatt45/memorii-ai", accent: "#38bdf8", label: "AI / Full Stack" },
     { title: "Voyager — Travel Management System", desc: "Responsive travel booking platform with separate user and admin modules for trip and booking management. Built with PHP and MySQL.", tags: ["PHP", "MySQL", "HTML", "CSS"], github: "https://github.com/parthbhatt45/Voyager", accent: "var(--orange)", label: "Full Stack" },
     { title: "Online Shopping Site", desc: "E-commerce website featuring product listings, cart functionality and a simple checkout interface.", tags: ["PHP", "HTML", "CSS", "JavaScript"], github: "https://github.com/parthbhatt45", accent: "#a78bfa", label: "Web App" },
 ];
@@ -80,7 +81,7 @@ export default function Projects() {
                     <a href="https://github.com/parthbhatt45" target="_blank" rel="noreferrer" className="btn-outline" style={{ fontSize: "13px", padding: "10px 22px" }}>All Repositories →</a>
                 </div>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : w < 1024 ? "1fr 1fr" : "repeat(3,1fr)", gap: "20px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "20px" }}>
                 {PROJECTS.map((p, i) => <ProjectCard key={p.title} p={p} index={i} visible={visible} isMobile={isMobile} />)}
             </div>
         </section>
