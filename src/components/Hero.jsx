@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useWindowWidth from "../hooks/useWindowWidth";
+import profilePic from "../assets/profile.jpeg";
 
 const ROLES = ["Full Stack Developer", "MERN Stack Engineer", "React Specialist", "Frontend Developer"];
 
