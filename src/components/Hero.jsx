@@ -173,7 +173,7 @@ export default function Hero() {
             <span style={{ position: "absolute", top: 0, left: 0, width: "44px", height: "44px", borderTop: "2px solid var(--orange)", borderLeft: "2px solid var(--orange)", borderRadius: "var(--radius-xl) 0 0 0", zIndex: 5, pointerEvents: "none" }} />
             <span style={{ position: "absolute", bottom: 0, right: 0, width: "44px", height: "44px", borderBottom: "2px solid var(--orange)", borderRight: "2px solid var(--orange)", borderRadius: "0 0 var(--radius-xl) 0", zIndex: 5, pointerEvents: "none" }} />
             <img
-              src="/src/assets/profile.jpeg" alt="Parth Bhatt"
+              src={profilePic} alt="Parth Bhatt"
               style={{ width: "100%", height: isMobile ? "320px" : isTablet ? "340px" : "460px", objectFit: "cover", objectPosition: "top center", display: "block" }}
               onError={e => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
             />
