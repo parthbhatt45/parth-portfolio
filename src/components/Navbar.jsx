@@ -16,13 +16,12 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 40);
-        window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll();
-        return () => window.removeEventListener("scroll", onScroll);
+        const fn = () => setScrolled(window.scrollY > 40);
+        window.addEventListener("scroll", fn, { passive: true });
+        fn();
+        return () => window.removeEventListener("scroll", fn);
     }, []);
 
-    /* active section via IntersectionObserver */
     useEffect(() => {
         const sections = document.querySelectorAll("section[id]");
         const obs = new IntersectionObserver(
@@ -41,23 +40,33 @@ export default function Navbar() {
 
     return (
         <header style={{
-            ...S.header,
-            background: scrolled ? "rgba(13,13,13,0.92)" : "transparent",
+            position: "fixed", top: 0, width: "100%", zIndex: 1000,
+            background: scrolled ? "rgba(13,13,13,0.95)" : "transparent",
             backdropFilter: scrolled ? "blur(20px)" : "none",
             WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
             boxShadow: scrolled ? "0 1px 0 rgba(255,255,255,0.05)" : "none",
+            transition: "background .3s, box-shadow .3s",
         }}>
-            <nav style={S.nav}>
+            <nav style={{
+                width: "90%", maxWidth: "1280px", margin: "0 auto",
+                height: "70px", display: "flex",
+                justifyContent: "space-between", alignItems: "center", gap: "16px",
+            }}>
 
                 {/* Logo */}
-                <a href="#home" onClick={e => goto(e, "#home")} style={S.logo}>
+                <a href="#home" onClick={e => goto(e, "#home")} style={{
+                    fontFamily: "var(--display)", fontWeight: 800, fontSize: "20px",
+                    color: "#fff", textDecoration: "none", letterSpacing: "-.02em", flexShrink: 0,
+                }}>
                     Parth<span style={{ color: "var(--orange)" }}>.</span>
                 </a>
 
                 {/* Desktop links */}
-                <ul style={S.menu}>
+                <ul className="desktop-nav" style={{
+                    display: "flex", gap: "24px", alignItems: "center", listStyle: "none",
+                }}>
                     {NAV_LINKS.map(({ label, href }) => (
-                        <li key={label} style={{ listStyle: "none" }}>
+                        <li key={label}>
                             <a href={href} onClick={e => goto(e, href)}
                                 className={`nav-link${active === href.slice(1) ? " active" : ""}`}>
                                 {label}
@@ -66,17 +75,24 @@ export default function Navbar() {
                     ))}
                 </ul>
 
-                {/* Hire me CTA */}
-                <a href="/resume.pdf" target="_blank" rel="noreferrer" className="btn-primary"
-                    style={{ padding: "10px 24px", fontSize: "13px" }}>
+                {/* Desktop CTA */}
+                <a href="/resume.pdf" target="_blank" rel="noreferrer"
+                    className="btn-primary desktop-cta"
+                    style={{ padding: "9px 22px", fontSize: "13px" }}>
                     Resume →
                 </a>
 
                 {/* Hamburger */}
-                <button style={S.hamburger} onClick={() => setMenuOpen(o => !o)} aria-label="menu">
+                <button className="hamburger-btn" onClick={() => setMenuOpen(o => !o)}
+                    aria-label="menu"
+                    style={{
+                        flexDirection: "column", gap: "5px",
+                        background: "none", border: "none", cursor: "pointer", padding: "8px",
+                    }}>
                     {[0, 1, 2].map(i => (
                         <span key={i} style={{
-                            ...S.bar,
+                            display: "block", width: "22px", height: "1.5px",
+                            background: "#fff", borderRadius: "1px", transition: "all .3s",
                             transform: menuOpen
                                 ? i === 0 ? "rotate(45deg) translate(5px,5px)"
                                     : i === 2 ? "rotate(-45deg) translate(5px,-5px)" : "none"
@@ -89,15 +105,27 @@ export default function Navbar() {
 
             {/* Mobile menu */}
             {menuOpen && (
-                <div style={S.mobileMenu}>
+                <div style={{
+                    position: "absolute", top: "100%", left: 0, right: 0,
+                    background: "rgba(13,13,13,.98)", backdropFilter: "blur(20px)",
+                    display: "flex", flexDirection: "column",
+                    padding: "20px 5% 24px", gap: "4px",
+                    borderBottom: "1px solid rgba(255,255,255,.06)",
+                    boxShadow: "0 16px 40px rgba(0,0,0,.5)",
+                }}>
                     {NAV_LINKS.map(({ label, href }) => (
                         <a key={label} href={href} onClick={e => goto(e, href)} style={{
-                            ...S.mobileLink,
+                            textDecoration: "none",
+                            fontFamily: "var(--body)", fontSize: "16px", fontWeight: 500,
                             color: active === href.slice(1) ? "var(--orange)" : "var(--text-mid)",
+                            padding: "12px 0",
+                            borderBottom: "1px solid rgba(255,255,255,.04)",
+                            transition: "color .2s",
                         }}>{label}</a>
                     ))}
                     <a href="/resume.pdf" target="_blank" rel="noreferrer"
-                        className="btn-primary" style={{ marginTop: "8px", justifyContent: "center" }}>
+                        className="btn-primary"
+                        style={{ marginTop: "16px", justifyContent: "center" }}>
                         Hire Me →
                     </a>
                 </div>
@@ -105,39 +133,3 @@ export default function Navbar() {
         </header>
     );
 }
-
-const S = {
-    header: {
-        position: "fixed", top: 0, width: "100%", zIndex: 1000,
-        transition: "background .3s, box-shadow .3s",
-    },
-    nav: {
-        width: "90%", maxWidth: "1280px", margin: "0 auto",
-        height: "76px", display: "flex",
-        justifyContent: "space-between", alignItems: "center", gap: "24px",
-    },
-    logo: {
-        fontFamily: "var(--display)", fontWeight: 800, fontSize: "22px",
-        color: "#fff", textDecoration: "none", letterSpacing: "-.02em",
-    },
-    menu: { display: "flex", gap: "28px", alignItems: "center", listStyle: "none" },
-    hamburger: {
-        display: "none", flexDirection: "column", gap: "5px",
-        background: "none", border: "none", cursor: "pointer", padding: "4px",
-    },
-    bar: {
-        display: "block", width: "22px", height: "1.5px",
-        background: "#fff", borderRadius: "1px", transition: "all .3s",
-    },
-    mobileMenu: {
-        position: "absolute", top: "100%", left: 0, right: 0,
-        background: "rgba(13,13,13,.97)", backdropFilter: "blur(20px)",
-        display: "flex", flexDirection: "column",
-        padding: "24px 5% 28px", gap: "18px",
-        borderBottom: "1px solid rgba(255,255,255,.06)",
-    },
-    mobileLink: {
-        textDecoration: "none", fontFamily: "var(--body)", fontSize: "16px",
-        transition: "color .2s",
-    },
-};

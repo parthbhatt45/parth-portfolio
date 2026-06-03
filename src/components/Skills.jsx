@@ -128,19 +128,26 @@ function SkillCard({ skill, index, visible }) {
 export default function Skills() {
     const ref = useRef(null);
     const [visible, setVisible] = useState(false);
+    const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
     useEffect(() => {
         const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: .06 });
         if (ref.current) obs.observe(ref.current);
         return () => obs.disconnect();
     }, []);
+    useEffect(() => {
+        const fn = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", fn, { passive: true });
+        return () => window.removeEventListener("resize", fn);
+    }, []);
+    const isMobile = width < 768;
 
     return (
-        <section id="skills" ref={ref} style={S.section}>
+        <section id="skills" ref={ref} style={{ width: "90%", maxWidth: "1280px", margin: "0 auto", padding: isMobile ? "70px 0" : "110px 0", borderTop: "1px solid rgba(255,255,255,.07)" }}>
             <div style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(32px)", transition: "opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1)" }}>
                 <p className="section-label">What I Use</p>
-                <h2 style={S.heading}>Skills</h2>
+                <h2 style={{ fontFamily: "var(--display)", fontWeight: 800, fontSize: isMobile ? "32px" : "48px", color: "#fff", letterSpacing: "-.02em", marginBottom: isMobile ? "32px" : "48px" }}>Skills</h2>
             </div>
-            <div style={S.grid}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(auto-fill, minmax(100px, 1fr))" : "repeat(auto-fill, minmax(140px, 1fr))", gap: "12px" }}>
                 {SKILLS.map((s, i) => <SkillCard key={s.name} skill={s} index={i} visible={visible} />)}
             </div>
         </section>
@@ -153,7 +160,7 @@ const S = {
     grid: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "14px" },
     card: {
         background: "var(--bg-card)", border: "1px solid rgba(255,255,255,.07)",
-        borderRadius: "var(--radius)", padding: "22px 14px 20px",
+        borderRadius: "var(--radius)", padding: "18px 10px 16px",
         cursor: "default", position: "relative", overflow: "hidden",
         display: "flex", flexDirection: "column", alignItems: "center", gap: "12px",
     },
