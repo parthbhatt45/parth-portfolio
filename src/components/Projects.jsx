@@ -2,11 +2,49 @@ import { useEffect, useRef, useState } from "react";
 import useWindowWidth from "../hooks/useWindowWidth";
 
 const PROJECTS = [
-    { title: "BeatByte — Music Streaming App", desc: "Full-stack MERN music streaming platform with JWT authentication, playlist management, liked songs, artist browsing and real-time audio playback controls.", tags: ["React", "Node.js", "Express", "MongoDB", "JWT"], github: "https://github.com/parthbhatt45/Beatbyte-Music", accent: "#22c55e", label: "MERN Stack" },
-    { title: "Memorii — AI-Powered Memory Assistant", desc: "AI-powered web application to assist Alzheimer's patients in remembering daily tasks and maintaining independence. Features a smart caregiver dashboard for real-time monitoring and multilingual support for native-language accessibility.", tags: ["React", "Tailwind CSS", "Python", "AI SDK", "Vercel"], github: "https://github.com/parthbhatt45/memorii-ai", accent: "#38bdf8", label: "AI / Full Stack" },
-    { title: "Voyager — Travel Management System", desc: "Responsive travel booking platform with separate user and admin modules for trip and booking management. Built with PHP and MySQL.", tags: ["PHP", "MySQL", "HTML", "CSS"], github: "https://github.com/parthbhatt45/Voyager", accent: "var(--orange)", label: "Full Stack" },
-    { title: "Online Shopping Site", desc: "E-commerce website featuring product listings, cart functionality and a simple checkout interface.", tags: ["PHP", "HTML", "CSS", "JavaScript"], github: "https://github.com/parthbhatt45", accent: "#a78bfa", label: "Web App" },
+    {
+        title: "Memorii — AI-Powered Memory Assistant",
+        desc: "Patent-pending AI web application to assist Alzheimer's patients with daily task reminders and multilingual support. Features a smart caregiver dashboard for real-time monitoring and a Python-based AI backend deployed on Vercel.",
+        tags: ["React", "Tailwind CSS", "Python", "AI SDK", "Vercel"],
+        github: "https://github.com/parthbhatt45/memorii-ai",
+        accent: "#38bdf8",
+        label: "AI / Full Stack"
+    },
+    {
+        title: "BeatByte V2 — Music Streaming App",
+        desc: "Spotify-inspired full-stack music streaming platform with JWT authentication, real-time audio playback, liked songs, recently played history, and user-specific data isolation. Features a custom Context API music player with a glassmorphism UI and mobile bottom navigation.",
+        tags: ["React", "Node.js", "Express", "MongoDB Atlas", "JWT", "Vercel", "Render"],
+        github: "https://github.com/parthbhatt45/BeatByte-V2",
+        live: "https://beat-byte-v2.vercel.app/",
+        accent: "#22c55e",
+        label: "MERN Stack"
+    },
+    {
+        title: "GitHub Project Explorer — Frontend Dashboard",
+        desc: "GitHub repository discovery dashboard that fetches top starred repos via the GitHub REST API. Features multi-filter search, real-time analytics, Chart.js visualizations, Framer Motion animations, and a localStorage-based bookmark and notes system.",
+        tags: ["React", "Tailwind CSS", "Chart.js", "Framer Motion", "Axios", "GitHub REST API"],
+        github: "https://github.com/parthbhatt45/github-project-explorer",
+        live: "https://github-project-explorer-beta.vercel.app/",
+        accent: "#a78bfa",
+        label: "Frontend"
+    },
+    {
+        title: "Voyager — Travel Management System",
+        desc: "Responsive travel booking platform with separate user and admin modules for trip and booking management. Includes an admin dashboard and a dynamic booking flow connected to a MySQL database.",
+        tags: ["HTML", "CSS", "JavaScript", "MySQL"],
+        github: "https://github.com/parthbhatt45/Voyager",
+        accent: "var(--orange)",
+        label: "Full Stack"
+    },
 ];
+
+const ExternalLinkIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+);
 
 const GithubIcon = () => (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
@@ -14,8 +52,21 @@ const GithubIcon = () => (
     </svg>
 );
 
+const PatentBadge = () => (
+    <span style={{
+        fontFamily: "var(--mono)", fontSize: "9px", padding: "2px 8px",
+        borderRadius: "100px", background: "#38bdf814", color: "#38bdf8",
+        border: "1px solid #38bdf835", marginLeft: "8px",
+        verticalAlign: "middle", letterSpacing: "0.04em"
+    }}>
+        PATENT PENDING
+    </span>
+);
+
 function ProjectCard({ p, index, visible, isMobile }) {
     const [hovered, setHovered] = useState(false);
+    const isPatent = p.title.includes("Memorii");
+
     return (
         <div
             onMouseEnter={() => setHovered(true)}
@@ -35,24 +86,42 @@ function ProjectCard({ p, index, visible, isMobile }) {
                     <span style={{ fontFamily: "var(--mono)", fontSize: "10px", color: "var(--text-muted)" }}>PRJ_00{index + 1}</span>
                     <span style={{ fontFamily: "var(--mono)", fontSize: "10px", padding: "3px 10px", borderRadius: "100px", background: `${p.accent}14`, color: p.accent }}>{p.label}</span>
                 </div>
-                <h3 style={{ fontFamily: "var(--display)", fontWeight: 700, fontSize: isMobile ? "16px" : "17px", color: "#fff", lineHeight: 1.35, marginBottom: "12px" }}>{p.title}</h3>
+                <h3 style={{ fontFamily: "var(--display)", fontWeight: 700, fontSize: isMobile ? "16px" : "17px", color: "#fff", lineHeight: 1.35, marginBottom: "12px" }}>
+                    {p.title}
+                    {isPatent && <PatentBadge />}
+                </h3>
                 <p style={{ color: "var(--text-mid)", fontSize: "14px", lineHeight: 1.78, marginBottom: "16px" }}>{p.desc}</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "7px", marginBottom: "20px" }}>
                     {p.tags.map(t => (
                         <span key={t} style={{ fontFamily: "var(--mono)", fontSize: "11px", padding: "4px 12px", borderRadius: "100px", border: `1px solid ${hovered ? `${p.accent}35` : "rgba(255,255,255,.07)"}`, color: hovered ? p.accent : "var(--text-mid)", background: hovered ? `${p.accent}0d` : "rgba(255,255,255,.03)", transition: "all .25s" }}>{t}</span>
                     ))}
                 </div>
-                <a href={p.github} target="_blank" rel="noreferrer" style={{
-                    display: "inline-flex", alignItems: "center", gap: "8px",
-                    padding: "10px 22px", borderRadius: "100px",
-                    border: `1.5px solid ${hovered ? p.accent : "rgba(255,255,255,.12)"}`,
-                    background: hovered ? p.accent : "transparent",
-                    color: hovered ? "#fff" : "var(--text-mid)",
-                    fontFamily: "var(--display)", fontWeight: 600, fontSize: "13px",
-                    textDecoration: "none", transition: "all .25s",
-                }}>
-                    <GithubIcon /> View Repository
-                </a>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    <a href={p.github} target="_blank" rel="noreferrer" style={{
+                        display: "inline-flex", alignItems: "center", gap: "8px",
+                        padding: "10px 22px", borderRadius: "100px",
+                        border: `1.5px solid ${hovered ? p.accent : "rgba(255,255,255,.12)"}`,
+                        background: hovered ? p.accent : "transparent",
+                        color: hovered ? "#fff" : "var(--text-mid)",
+                        fontFamily: "var(--display)", fontWeight: 600, fontSize: "13px",
+                        textDecoration: "none", transition: "all .25s",
+                    }}>
+                        <GithubIcon /> View Repository
+                    </a>
+                    {p.live && (
+                        <a href={p.live} target="_blank" rel="noreferrer" style={{
+                            display: "inline-flex", alignItems: "center", gap: "8px",
+                            padding: "10px 22px", borderRadius: "100px",
+                            border: `1.5px solid ${hovered ? p.accent : "rgba(255,255,255,.12)"}`,
+                            background: "transparent",
+                            color: hovered ? p.accent : "var(--text-mid)",
+                            fontFamily: "var(--display)", fontWeight: 600, fontSize: "13px",
+                            textDecoration: "none", transition: "all .25s",
+                        }}>
+                            <ExternalLinkIcon /> Live Demo
+                        </a>
+                    )}
+                </div>
             </div>
         </div>
     );
